@@ -10,7 +10,7 @@ class MultiModalVideoDetector:
         tr_params: dict,
         model_path: str,
         output_path: str,
-        conf_thres: float = 0.25,
+        conf_thres: float = 0.5,
         show_preview: bool = True,
     ):
         # 初始化视频捕获
@@ -113,11 +113,47 @@ class MultiModalVideoDetector:
         if self.show_preview:
             cv2.destroyAllWindows()
 
+    def gen(self):
+        """生成实时视频流"""
+        while True:
+            self.frame_count += 1
+
+            # 每6帧丢弃一帧实现帧率同步
+            if self.frame_count % 6 == 0:
+                if not self.tr_cap.grab():
+                    break
+                continue
+
+            if not (self.ir_cap.grab() and self.tr_cap.grab()):
+                break
+
+            ir_ret, ir_frame = self.ir_cap.retrieve()
+            tr_ret, tr_frame = self.tr_cap.retrieve()
+
+            if not (ir_ret and tr_ret):
+                break
+
+            # 处理帧
+            ir_processed = self.process_frame(ir_frame, self.ir_params)
+            tr_processed = self.process_frame(tr_frame, self.tr_params)
+
+            # 融合两个模态
+            fused_frame = cv2.addWeighted(ir_processed, 0.3, tr_processed, 0.7, 0)
+
+            # 目标检测和绘制
+            output_frame = self.detect_and_draw(fused_frame)
+
+            # 转换图像格式用于流传输
+            frame_bytes = cv2.imencode(".jpg", output_frame)[1].tobytes()
+            yield (
+                b"--frame\r\nContent-Type: image/jpeg\r\n\r\n" + frame_bytes + b"\r\n"
+            )
+
 
 def main():
     # IR视频参数
     ir_params = {
-        "video_path": r"data/raw_video/output_ir.mp4",
+        "video_path": r"data/output_ir.mp4",
         "start_frame": int(138.8 * 25),
         "crop_params": (100, 0, int(640 * 2.5), int(512 * 2.5)),
         "resolution": (640, 512),
@@ -125,7 +161,7 @@ def main():
 
     # TR视频参数
     tr_params = {
-        "video_path": r"data/raw_video/output_tr.mp4",
+        "video_path": r"data/output_tr.mp4",
         "start_frame": 170 * 25,
         "crop_params": (0, 60, int(640 * 0.95), int(512 * 0.95)),
         "resolution": (640, 512),
@@ -135,9 +171,9 @@ def main():
     detector = MultiModalVideoDetector(
         ir_params=ir_params,
         tr_params=tr_params,
-        model_path="yolo11n_merge_tr.pt",  # YOLO模型路径
+        model_path=r"model\yolo11n_merge_tr.pt",  # YOLO模型路径
         output_path="output_detection.mp4",
-        conf_thres=0.25,
+        conf_thres=0.6,
         show_preview=True,
     )
 

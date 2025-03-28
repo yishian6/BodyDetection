@@ -1,19 +1,40 @@
-from flask import Response, Blueprint
-from ultralytics import YOLO
-import cv2
+from flask import Response, Blueprint, request
+from src.MultiModalVideoDetector import MultiModalVideoDetector
 
-realtime_bp = Blueprint("realtime", __name__)
-model = YOLO(r"yolo11n.pt")
-camera = cv2.VideoCapture(0)
-
-
-def gen():
-    while True:
-        ret, frame = camera.read()
-        frame = cv2.imencode(".jpg", frame)[1].tobytes()
-        yield (b"--frame\r\nContent-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
+realtime_bp = Blueprint("realtime", __name__, url_prefix="/")
 
 
 @realtime_bp.route("/realtime", methods=["GET"])
 def video_feed():
-    return Response(gen(), mimetype="multipart/x-mixed-replace; boundary=frame")
+    """实时双模态视频流接口"""
+    
+    
+    # IR视频参数
+    ir_params = {
+        "video_path": r"data\output_ir.mp4",
+        "start_frame": int(138.8 * 25),
+        "crop_params": (100, 0, int(640 * 2.5), int(512 * 2.5)),
+        "resolution": (640, 512),
+    }
+
+    # TR视频参数
+    tr_params = {
+        "video_path": r"data\output_tr.mp4",
+        "start_frame": 170 * 25,
+        "crop_params": (0, 60, int(640 * 0.95), int(512 * 0.95)),
+        "resolution": (640, 512),
+    }
+
+    # 创建检测器
+    detector = MultiModalVideoDetector(
+        ir_params=ir_params,
+        tr_params=tr_params,
+        model_path=r"model\yolo11n_merge_tr.pt",  # YOLO模型路径
+        output_path="output_detection.mp4",
+        conf_thres=0.6,
+        show_preview=True,
+    )
+
+    return Response(
+        detector.gen(), mimetype="multipart/x-mixed-replace; boundary=frame"
+    )
