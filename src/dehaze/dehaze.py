@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import torch
 import torchvision
 import torch.optim
@@ -9,7 +11,17 @@ import glob
 from pathlib import Path
 
 
-def dehaze_image(image_path, dehaze_net, save_path):
+def dehaze_image(image_path: str, dehaze_net: torch.nn.Module, save_path: str) -> float:
+    """检测图片
+
+    Args:
+        image_path (str): 图片路径
+        dehaze_net (torch.nn.Module): 去雾模型
+        save_path (str): 保存路径
+
+    Returns:
+        float: 检测耗时
+    """
     data_hazy = Image.open(image_path)
     start = time.time()
     data_hazy = np.asarray(data_hazy) / 255.0

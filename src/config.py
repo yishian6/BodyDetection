@@ -8,6 +8,9 @@ UPLOAD_FOLDER = join(ROOT, "upload")
 IMAGE_FOLDER = join(UPLOAD_FOLDER, "images")
 VIDEO_FOLDER = join(UPLOAD_FOLDER, "videos")
 DEHAZE_FOLDER = join(UPLOAD_FOLDER, "dehazed")
+DETECT_FOLDER = join(UPLOAD_FOLDER, "detected")
+
+
 
 
 def get_logger():

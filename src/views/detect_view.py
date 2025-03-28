@@ -1,51 +1,46 @@
 from flask import Blueprint, jsonify, request
-from os.path import join
-from src.ImageDetector import ImageDetector
+from os.path import join, exists
+from src.config import IMAGE_FOLDER
+from src.ImageDetector import detect_and_draw
 
 detect_bp = Blueprint("detect", __name__, url_prefix="/detect")
 
 
-@detect_bp.route("/detect/images", methods=["POST"])
+@detect_bp.route("/images", methods=["POST"])
 def detect_images_route():
     """
     图像检测
     """
-    if "image1" not in request.files or "image2" not in request.files:
-        return jsonify({"error": "No image part"}), 400
+    # 获取图片ID
+    image_id = request.json.get("image_id")
+    if not image_id:
+        return jsonify({"error": "No image ID provided"}), 400
+    # 在上传目录中查找图片
+    for ext in [".jpg", ".jpeg", ".png", ".bmp"]:
+        image_name = f"{image_id}{ext}"
+        image_path = join(IMAGE_FOLDER, image_name)
+        if exists(image_path):
+            try:
+                # 执行目标检测
+                res = detect_and_draw(image_path)
+                return jsonify(
+                    {
+                        "message": "Detection success",
+                        "save_path": res[0],
+                        "process_time": res[1],
+                    }
+                )
+            except Exception as e:
+                return jsonify({"error": f"Processing failed: {str(e)}"}), 500
 
-    file1 = request.files["image1"]
-    file2 = request.files["image2"]
-
-    if file1.filename == "" or file2.filename == "":
-        return jsonify({"error": "No selected file"}), 400
-
-    if file1 and file2:
-        filename1 = file1.filename
-        filename2 = file2.filename
-        file_path1 = join("/path/to/upload", filename1)
-        file_path2 = join("/path/to/upload", filename2)
-        file1.save(file_path1)
-        file2.save(file_path2)
+    return jsonify({"error": "Image not found"}), 404
 
 
-@detect_bp.route("/detect/videos", methods=["POST"])
+@detect_bp.route("/videos", methods=["POST"])
 def detect_videos_route():
     """
     视频检测
     """
-    if "video1" not in request.files or "video2" not in request.files:
-        return jsonify({"error": "No video part"}), 400
-
-    file1 = request.files["video1"]
-    file2 = request.files["video2"]
-
-    if file1.filename == "" or file2.filename == "":
-        return jsonify({"error": "No selected file"}), 400
-
-    if file1 and file2:
-        filename1 = file1.filename
-        filename2 = file2.filename
-        file_path1 = join("/path/to/upload", filename1)
-        file_path2 = join("/path/to/upload", filename2)
-        file1.save(file_path1)
-        file2.save(file_path2)
+    if "video_id" not in request.json:
+        return jsonify({"error": "No video ID provided"}), 400
+    
