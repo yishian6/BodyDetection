@@ -4,7 +4,6 @@ import torch
 import torchvision
 import torch.optim
 import time
-
 import model as net
 import numpy as np
 from PIL import Image
