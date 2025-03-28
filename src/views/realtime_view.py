@@ -4,7 +4,7 @@ import cv2
 
 realtime_bp = Blueprint("realtime", __name__)
 model = YOLO(r"yolo11n.pt")
-camera = cv2.VideoCapture(r"data\output_ir.mp4")
+camera = cv2.VideoCapture(0)
 
 
 def gen():

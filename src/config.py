@@ -1,7 +1,13 @@
 import logging
-from os.path import dirname, abspath
+from os.path import dirname, abspath, join
 
 ROOT = dirname(dirname(abspath(__file__)))
+SRC_FOLDER = join(ROOT, "src")
+MODEL_FOLDER = join(ROOT, "model")
+UPLOAD_FOLDER = join(ROOT, "upload")
+IMAGE_FOLDER = join(UPLOAD_FOLDER, "images")
+VIDEO_FOLDER = join(UPLOAD_FOLDER, "videos")
+DEHAZE_FOLDER = join(UPLOAD_FOLDER, "dehazed")
 
 
 def get_logger():
