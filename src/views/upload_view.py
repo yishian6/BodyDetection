@@ -1,7 +1,8 @@
+from pathlib import Path
 from flask import Blueprint, jsonify, request, send_from_directory
 import uuid
 import os
-from src.config import IMAGE_FOLDER, VIDEO_FOLDER
+from src.config import IMAGE_FOLDER, VIDEO_FOLDER, UPLOAD_FOLDER
 
 upload_dp = Blueprint("upload", __name__, url_prefix="/upload")
 
@@ -25,15 +26,16 @@ def upload_image():
         image_id = str(uuid.uuid4())
         filename = f"{image_id}{file_extension}"
         file_path = os.path.join(IMAGE_FOLDER, filename)
-
+        image_type = os.path.basename(os.path.normpath(IMAGE_FOLDER))
         file.save(file_path)
 
-        return jsonify({"message": "Image upload success", "image_id": image_id, "file_path": f"/upload/{filename}"})
+        return jsonify({"message": "Image upload success", "image_id": image_id, "file_path": f"/upload/{image_type}/{filename}"})
 
 
-@upload_dp.route('/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(IMAGE_FOLDER, filename)
+@upload_dp.route('/<param1>/<param2>')
+def uploaded_file(param1, param2):
+    #  param1 是目录，param2 是文件名
+    return send_from_directory(Path(UPLOAD_FOLDER) / param1, param2)
 
 
 @upload_dp.route("/video", methods=["POST"])

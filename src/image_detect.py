@@ -6,9 +6,9 @@ import time
 
 
 def detect_and_draw(
-    image_path: str,
-    model_path: str = "yolo11n.pt",
-    save_folder: Path = Path(DETECT_FOLDER),
+        image_path: str,
+        model_path: str = "yolo11n.pt",
+        save_folder: Path = Path(DETECT_FOLDER),
 ) -> tuple[str, float]:
     """检测并绘制边界框
 
@@ -31,7 +31,7 @@ def detect_and_draw(
 
     model = YOLO(model_path)
     # 对两个图像进行目标检测
-    results = model(image)[0]
+    results = model(image, conf=0.5, classes=[0])[0]
     # 在红外图像上绘制检测框
     annotated = image.copy()
     for box in results.boxes:

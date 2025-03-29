@@ -1,6 +1,7 @@
+import os
 from flask import Blueprint, jsonify, request
 from os.path import join, exists
-from src.config import IMAGE_FOLDER, VIDEO_FOLDER, MERGE_FOLDER
+from src.config import IMAGE_FOLDER,DETECT_FOLDER, VIDEO_FOLDER, MERGE_FOLDER
 from src.image_detect import detect_and_draw
 from src.video_detect import detect_video
 from src.MultiModalVideoDetector import MultiModalVideoDetector
@@ -21,15 +22,19 @@ def detect_images_route():
     for ext in [".jpg", ".jpeg", ".png", ".bmp"]:
         image_name = f"{image_id}{ext}"
         image_path = join(IMAGE_FOLDER, image_name)
+        image_type = os.path.basename(os.path.normpath(DETECT_FOLDER))
         if exists(image_path):
             try:
                 # 执行目标检测
                 res = detect_and_draw(image_path)
+
                 return jsonify(
                     {
+                        "code": 200,
                         "message": "Detection success",
                         "save_path": res[0],
                         "process_time": res[1],
+                        "file_path": f"/upload/{image_type}/{image_name}",
                     }
                 )
             except Exception as e:

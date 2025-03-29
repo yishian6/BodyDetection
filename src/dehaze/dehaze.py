@@ -11,7 +11,7 @@ import glob
 from pathlib import Path
 
 
-def dehaze_image(image_path: str, dehaze_net: torch.nn.Module, save_path: str) -> float:
+def dehaze_image(image_path: str, dehaze_net: torch.nn.Module, save_path: str) -> tuple[str, float]:
     """检测图片
 
     Args:
@@ -28,14 +28,14 @@ def dehaze_image(image_path: str, dehaze_net: torch.nn.Module, save_path: str) -
 
     data_hazy = torch.from_numpy(data_hazy).float()
     data_hazy = data_hazy.permute(2, 0, 1)
-    dev = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     data_hazy = data_hazy.to(dev).unsqueeze(0)
 
     clean_image = dehaze_net(data_hazy)
     end = time.time()
     filename = image_path.split("\\")[-1]
     torchvision.utils.save_image(clean_image, Path(save_path) / filename)
-    return end - start
+    return filename, (end - start)
 
 
 if __name__ == "__main__":
