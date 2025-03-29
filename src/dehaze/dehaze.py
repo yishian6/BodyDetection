@@ -28,7 +28,8 @@ def dehaze_image(image_path: str, dehaze_net: torch.nn.Module, save_path: str) -
 
     data_hazy = torch.from_numpy(data_hazy).float()
     data_hazy = data_hazy.permute(2, 0, 1)
-    data_hazy = data_hazy.cuda().unsqueeze(0)
+    dev = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    data_hazy = data_hazy.to(dev).unsqueeze(0)
 
     clean_image = dehaze_net(data_hazy)
     end = time.time()

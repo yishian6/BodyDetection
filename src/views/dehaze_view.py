@@ -15,8 +15,9 @@ dehaze_bp = Blueprint("dehaze", __name__, url_prefix="/")
 os.makedirs(DEHAZE_FOLDER, exist_ok=True)
 
 # 初始化模型
-dehaze_net = net.dehaze_net().cuda()
-dehaze_net.load_state_dict(torch.load(Path(MODEL_FOLDER) / "dehazer.pth"))
+dev = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+dehaze_net = net.dehaze_net().to(dev)
+dehaze_net.load_state_dict(torch.load(Path(MODEL_FOLDER) / "dehaze.pth"))
 
 
 @dehaze_bp.route("/dehaze", methods=["POST"])
@@ -44,9 +45,11 @@ def dehaze():
 
                 return jsonify(
                     {
+                        "code": 200,
                         "message": "Dehaze success",
                         "image_name": image_name,
                         "process_time": process_time,
+                        "file_path": f"/upload/{image_name}",
                     }
                 )
             except Exception as e:

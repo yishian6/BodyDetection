@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, send_from_directory
 import uuid
 import os
 from src.config import IMAGE_FOLDER, VIDEO_FOLDER
@@ -6,16 +6,15 @@ from src.config import IMAGE_FOLDER, VIDEO_FOLDER
 upload_dp = Blueprint("upload", __name__, url_prefix="/upload")
 
 
-
 @upload_dp.route("/image", methods=["POST"])
 def upload_image():
     """
     上传图片接口
     """
-    if "image" not in request.files:
+    if "file" not in request.files:
         return jsonify({"error": "No image file provided"}), 400
 
-    file = request.files["image"]
+    file = request.files["file"]
 
     if file.filename == "":
         return jsonify({"error": "No selected file"}), 400
@@ -29,7 +28,12 @@ def upload_image():
 
         file.save(file_path)
 
-        return jsonify({"message": "Image upload success", "image_id": image_id})
+        return jsonify({"message": "Image upload success", "image_id": image_id, "file_path": f"/upload/{filename}"})
+
+
+@upload_dp.route('/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(IMAGE_FOLDER, filename)
 
 
 @upload_dp.route("/video", methods=["POST"])
