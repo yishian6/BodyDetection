@@ -34,10 +34,11 @@ def dehaze():
     for ext in [".jpg", ".jpeg", ".png", ".bmp"]:
         image_name = f"{image_id}{ext}"
         image_path = os.path.join(IMAGE_FOLDER, image_name)
+        image_type = os.path.basename(os.path.normpath(DEHAZE_FOLDER))
         if os.path.exists(image_path):
             try:
                 # 执行去雾处理
-                process_time = dehaze_image(
+                filename, process_time = dehaze_image(
                     image_path=image_path,
                     dehaze_net=dehaze_net,
                     save_path=DEHAZE_FOLDER,
@@ -49,7 +50,7 @@ def dehaze():
                         "message": "Dehaze success",
                         "image_name": image_name,
                         "process_time": process_time,
-                        "file_path": f"/upload/{image_name}",
+                        "file_path": f"/upload/{image_type}/{filename}",
                     }
                 )
             except Exception as e:
