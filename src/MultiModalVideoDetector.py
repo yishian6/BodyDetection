@@ -91,6 +91,11 @@ class MultiModalVideoDetector:
             ir_processed = self.process_frame(ir_frame, self.ir_params)
             tr_processed = self.process_frame(tr_frame, self.tr_params)
 
+            # 显示原始帧
+            if self.show_preview:
+                cv2.imshow("IR Original", ir_frame)
+                cv2.imshow("TR Original", tr_frame)
+
             # 融合两个模态，使用加权平均
             fused_frame = cv2.addWeighted(ir_processed, 0.3, tr_processed, 0.7, 0)
 
@@ -103,6 +108,14 @@ class MultiModalVideoDetector:
             # 显示预览
             if self.show_preview:
                 cv2.imshow("Detection", output_frame)
+                key = cv2.waitKey(1)
+                if key == 32:  # 空格暂停
+                    while True:
+                        if cv2.waitKey(0) == 32:  # 再次按空格继续
+                            break
+                elif key == 27:  # ESC退出
+                    break
+
                 if cv2.waitKey(1) == 27:  # ESC退出
                     break
 
@@ -129,6 +142,9 @@ class MultiModalVideoDetector:
 
             ir_ret, ir_frame = self.ir_cap.retrieve()
             tr_ret, tr_frame = self.tr_cap.retrieve()
+            # 同时展示两路视频流
+            cv2.imshow("IR", ir_frame)
+            cv2.imshow("TR", tr_frame)
 
             if not (ir_ret and tr_ret):
                 break

@@ -1,4 +1,4 @@
-from flask import Response, Blueprint, request
+from flask import Response, Blueprint
 from src.MultiModalVideoDetector import MultiModalVideoDetector
 
 realtime_bp = Blueprint("realtime", __name__, url_prefix="/")
