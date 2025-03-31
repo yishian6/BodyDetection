@@ -8,6 +8,10 @@ from src.image_detect import detect_and_draw
 from src.video_detect import detect_video
 from src.MultiModalVideoDetector import MultiModalVideoDetector
 from src.task_manager import task_manager, TaskStatus
+from src.config import get_logger
+from src.cache import video_cache
+
+logger = get_logger()
 
 detect_bp = Blueprint("detect", __name__, url_prefix="/detect")
 
@@ -46,61 +50,62 @@ def detect_images_route():
     return jsonify({"error": "Image not found"}), 404
 
 
-def process_single_video_in_background(task_id: str, video_path: str):
+def process_single_video_in_background(task_id: str, video_path: str, video_id: str):
     """后台处理单个视频的函数"""
     try:
-        task_manager.update_task(task_id, TaskStatus.PROCESSING)
-        # 执行视频目标检测
-        output_path, process_time, detections = detect_video(video_path)
+        task_manager.update_task(task_id, TaskStatus.PROCESSING, progress=0)
+        output_path, process_time = detect_video(video_path)
 
+        result = {
+            "message": "Detection success",
+            "save_path": output_path,
+            "process_time": process_time,
+        }
+
+        # 更新缓存
+        video_cache.set(video_id, result)
+
+        # 更新任务状态
         task_manager.update_task(
             task_id,
             TaskStatus.COMPLETED,
-            result={
-                "message": "Detection success",
-                "save_path": output_path,
-                "process_time": process_time,
-                "detections": detections,
-            },
+            result=result,
+            progress=100,
         )
+        logger.info(f"Video processing completed: {output_path}")
     except Exception as e:
-        task_manager.update_task(task_id, TaskStatus.FAILED, error=str(e))
+        logger.error(f"Video processing failed: {str(e)}")
+        task_manager.update_task(task_id, TaskStatus.FAILED, error=str(e), progress=0)
 
 
 @detect_bp.route("/videos", methods=["POST"])
 def detect_videos_route():
-    """
-    视频检测 - 异步处理版本
-
-    return:
-    {
-        "message": "Processing started",
-        "task_id": "uuid-string"
-    }
-    """
-    # 获取视频ID
+    """视频检测 - 异步处理版本"""
     video_id = request.json.get("video_id")
     if not video_id:
         return jsonify({"error": "No video ID provided"}), 400
+
+    # 检查缓存
+    cached_result = video_cache.get(video_id)
+    if cached_result:
+        return jsonify({"message": "Retrieved from cache", "result": cached_result})
 
     # 在上传目录中查找视频
     for ext in [".mp4", ".avi", ".mov"]:
         video_name = f"{video_id}{ext}"
         video_path = join(VIDEO_FOLDER, video_name)
         if exists(video_path):
-            # 创建任务ID
             task_id = str(uuid.uuid4())
             task_manager.create_task(task_id)
 
             # 启动后台处理线程
             thread = Thread(
                 target=process_single_video_in_background,
-                args=(task_id, video_path),
+                args=(task_id, video_path, video_id),  # 添加video_id参数
                 daemon=True,
             )
             thread.start()
 
-            # 立即返回任务ID
             return jsonify({"message": "Processing started", "task_id": task_id})
 
     return jsonify({"error": "Video not found"}), 404
@@ -119,7 +124,7 @@ def process_video_in_background(task_id: str, detector: MultiModalVideoDetector)
         task_manager.update_task(task_id, TaskStatus.FAILED, error=str(e))
 
 
-@detect_bp.route("/merge_and_detect", methods=["POST"])
+@detect_bp.route("/merge", methods=["POST"])
 def merge_and_detect():
     ir_path = request.args.get("ir_path")
     tr_path = request.args.get("tr_path")

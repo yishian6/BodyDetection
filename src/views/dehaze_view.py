@@ -17,7 +17,7 @@ os.makedirs(DEHAZE_FOLDER, exist_ok=True)
 # 初始化模型
 dev = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 dehaze_net = net.dehaze_net().to(dev)
-dehaze_net.load_state_dict(torch.load(Path(MODEL_FOLDER) / "dehaze.pth"))
+dehaze_net.load_state_dict(torch.load(Path(MODEL_FOLDER) / "dehaze.pth", weights_only=True))
 
 
 @dehaze_bp.route("/dehaze", methods=["POST"])

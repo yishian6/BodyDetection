@@ -60,7 +60,7 @@ def detect_video(
         timestamp = frame_count / fps
 
         # 对当前帧进行目标检测
-        results = model(frame)[0]
+        results = model(frame, conf=0.5, classes=[0], verbose=False)[0]
 
         # 在帧上绘制检测框
         annotated_frame = frame.copy()
@@ -107,7 +107,7 @@ def detect_video(
     end_time = time.time()
     process_time = end_time - start_time
 
-    return output_path, process_time, detection_results
+    return output_path, process_time
 
 
 if __name__ == "__main__":

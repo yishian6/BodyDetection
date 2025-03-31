@@ -62,6 +62,7 @@ class MultiModalVideoDetector:
             frame,
             conf=self.conf_thres,
             classes=[0],
+            verbose=False,
         )[0]
         annotated_frame = results.plot()
         return annotated_frame
