@@ -9,7 +9,7 @@ def detect_video(
     video_path: str,
     model_path: str = "yolo11n.pt",
     save_folder: Path = Path(DETECT_FOLDER),
-) -> tuple[str, float, list]:
+) -> tuple[str, float]:
     """检测视频中的目标
 
     Args:
@@ -41,7 +41,7 @@ def detect_video(
     save_folder.mkdir(parents=True, exist_ok=True)
     output_path = str(save_folder / filename)
 
-    fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+    fourcc = cv2.VideoWriter_fourcc(*"avc1")
     out = cv2.VideoWriter(output_path, fourcc, fps, (frame_width, frame_height))
 
     # 加载模型

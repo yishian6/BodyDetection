@@ -55,11 +55,13 @@ def process_single_video_in_background(task_id: str, video_path: str, video_id: 
     try:
         task_manager.update_task(task_id, TaskStatus.PROCESSING, progress=0)
         output_path, process_time = detect_video(video_path)
-
+        # 文件名
+        video_name = os.path.basename(os.path.normpath(output_path))
         result = {
             "message": "Detection success",
             "save_path": output_path,
             "process_time": process_time,
+            "file_path": f"/upload/video/detected/{video_name}",
         }
 
         # 更新缓存
