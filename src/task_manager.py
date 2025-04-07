@@ -1,7 +1,9 @@
 from enum import Enum
 from typing import Dict, Any
 import time
-from src.config import get_logger
+from src.config import (
+    get_logger,
+)
 
 
 logger = get_logger()
@@ -23,13 +25,16 @@ class TaskManager:
             "status": TaskStatus.PENDING,
             "result": None,
             "error": None,
-            "progress": 0,
             "start_time": time.time(),
         }
         logger.info(f"Task created: {task_id}")
 
     def update_task(
-        self, task_id: str, status: TaskStatus, result=None, error=None, progress=None
+        self,
+        task_id: str,
+        status: TaskStatus,
+        result=None,
+        error=None,
     ) -> None:
         if task_id in self.tasks:
             if status:
@@ -38,8 +43,6 @@ class TaskManager:
                 self.tasks[task_id]["result"] = result
             if error is not None:
                 self.tasks[task_id]["error"] = error
-            if progress is not None:
-                self.tasks[task_id]["progress"] = progress
             logger.info(f"Task updated: {task_id}, status: {status.value}")
         else:
             logger.error(f"Task not found: {task_id}")

@@ -22,7 +22,6 @@ def get_task_status(task_id):
             "status": "pending|processing|completed|failed",
             "result": {...} | null,  # 当任务完成时返回结果
             "error": "错误信息" | null,  # 当任务失败时返回错误信息
-            "progress": 0-100  # 处理进度(百分比)
         }
     """
     status = task_manager.get_task_status(task_id)
@@ -34,7 +33,6 @@ def get_task_status(task_id):
         "status": status["status"].value,  # 将枚举转换为字符串
         "result": status.get("result"),
         "error": status.get("error"),
-        "progress": status.get("progress", 0),
     }
 
     return jsonify(response_data)
@@ -48,7 +46,6 @@ def list_tasks():
         task_data = {
             "task_id": task_id,
             "status": task_info["status"].value,
-            "progress": task_info.get("progress", 0),
             "start_time": task_info.get("start_time"),
             "has_result": task_info.get("result") is not None,
             "has_error": task_info.get("error") is not None,
@@ -100,7 +97,6 @@ def get_task_result(task_id):
             {
                 "error": "Task is not completed yet",
                 "status": task_info["status"].value,
-                "progress": task_info["progress"],
             }
         ), 400
 

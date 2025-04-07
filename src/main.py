@@ -5,7 +5,7 @@ import sys
 from config import ROOT, UPLOAD_FOLDER
 
 sys.path.append(ROOT)
-from views import dehaze_view, detect_view, realtime_view, upload_view, task_view
+from views import dehaze_view, detect_view, realtime_view, upload_view, task_view, val_view
 
 app = Flask(__name__, static_url_path="/")
 
@@ -14,6 +14,7 @@ app.register_blueprint(detect_view.detect_bp)
 app.register_blueprint(realtime_view.realtime_bp)
 app.register_blueprint(upload_view.upload_dp)
 app.register_blueprint(task_view.task_bp)
+app.register_blueprint(val_view.val_bp)
 
 
 @app.route("/")
@@ -62,4 +63,4 @@ def download_file():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)

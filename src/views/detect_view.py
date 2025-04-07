@@ -9,7 +9,6 @@ from src.video_detect import detect_video
 from src.MultiModalVideoDetector import MultiModalVideoDetector
 from src.task_manager import task_manager, TaskStatus
 from src.config import get_logger
-from src.cache import video_cache
 
 logger = get_logger()
 
@@ -53,7 +52,7 @@ def detect_images_route():
 def process_single_video_in_background(task_id: str, video_path: str, video_id: str):
     """后台处理单个视频的函数"""
     try:
-        task_manager.update_task(task_id, TaskStatus.PROCESSING, progress=0)
+        task_manager.update_task(task_id, TaskStatus.PROCESSING)
         output_path, process_time = detect_video(video_path)
         # 文件名
         video_name = os.path.basename(os.path.normpath(output_path))
@@ -64,20 +63,16 @@ def process_single_video_in_background(task_id: str, video_path: str, video_id: 
             "file_path": f"/upload/video/detected/{video_name}",
         }
 
-        # 更新缓存
-        video_cache.set(video_id, result)
-
         # 更新任务状态
         task_manager.update_task(
             task_id,
             TaskStatus.COMPLETED,
             result=result,
-            progress=100,
         )
         logger.info(f"Video processing completed: {output_path}")
     except Exception as e:
         logger.error(f"Video processing failed: {str(e)}")
-        task_manager.update_task(task_id, TaskStatus.FAILED, error=str(e), progress=0)
+        task_manager.update_task(task_id, TaskStatus.FAILED, error=str(e))
 
 
 @detect_bp.route("/videos", methods=["POST"])
@@ -86,11 +81,6 @@ def detect_videos_route():
     video_id = request.json.get("video_id")
     if not video_id:
         return jsonify({"error": "No video ID provided"}), 400
-
-    # 检查缓存
-    cached_result = video_cache.get(video_id)
-    if cached_result:
-        return jsonify({"message": "Retrieved from cache", "result": cached_result})
 
     # 在上传目录中查找视频
     for ext in [".mp4", ".avi", ".mov"]:
@@ -157,13 +147,3 @@ def merge_and_detect():
 
     # 立即返回任务ID
     return jsonify({"message": "Processing started", "task_id": task_id})
-
-
-@detect_bp.route("/task_status/<task_id>", methods=["GET"])
-def get_task_status(task_id):
-    """获取任务处理状态"""
-    status = task_manager.get_task_status(task_id)
-    if status is None:
-        return jsonify({"error": "Task not found"}), 404
-
-    return jsonify(status)
