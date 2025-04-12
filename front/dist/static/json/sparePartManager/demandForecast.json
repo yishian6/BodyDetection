@@ -1,0 +1,60 @@
+{
+  "table1Data": [
+    {
+      "UNIT_NAME": "南京",
+      "MARKET_NAME": "充电控制器",
+      "TYPE_NAME": "280",
+      "CAPACITY": "560",
+      "START_TIME": "1130",
+      "STATUS":"库存不足",
+      "USER":"南瑞"
+    },
+    {
+      "UNIT_NAME": "无锡",
+      "MARKET_NAME": "液晶屏",
+      "TYPE_NAME": "390",
+      "CAPACITY": "230",
+      "START_TIME": "510",
+      "STATUS":"库存不足",
+      "USER":"山东鲁能"
+    },
+    {
+      "UNIT_NAME": "苏州",
+      "MARKET_NAME": "充电控制器",
+      "TYPE_NAME": "410",
+      "CAPACITY": "290",
+      "START_TIME": "400",
+      "STATUS":"库存合适",
+      "USER":"普瑞特"
+    },
+    {
+      "UNIT_NAME": "苏州",
+      "MARKET_NAME": "液晶屏",
+      "TYPE_NAME": "803",
+      "CAPACITY": "390",
+      "START_TIME": "780",
+      "STATUS":"库存充足",
+      "USER":"南瑞"
+    },
+    {
+      "UNIT_NAME": "淮安",
+      "MARKET_NAME": "充电模块",
+      "TYPE_NAME": "10",
+      "CAPACITY": "47",
+      "START_TIME": "120",
+      "STATUS":"库存不足",
+      "USER":"华商三优"
+    }
+  ],
+  "table2Data": [
+    {
+      "UNIT_NAME": "南京",
+      "MARKET_NAME": "液晶屏",
+      "TYPE_NAME": "400",
+      "CAPACITY": "2021-09-30",
+      "START_TIME": "2021-08-21 10:29:00",
+      "STATUS":"刘成刚",
+      "USER":"南瑞",
+      "xing":"BYU-0911-NL"
+    }]
+}

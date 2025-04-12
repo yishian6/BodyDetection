@@ -10,7 +10,7 @@ __pycache__/
 .Python
 build/
 develop-eggs/
-dist/
+#dist/
 downloads/
 eggs/
 .eggs/
@@ -163,8 +163,10 @@ cython_debug/
 .history/
 .vscode/
 *.pt 
-*.png 
-*.jpg
-*.mp4
+#*.png
+#*.jpg
+#*.mp4
 data.zip
 upload/
+data/
+output_detection.mp4

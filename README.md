@@ -29,3 +29,22 @@ sequenceDiagram
     Server->>TaskManager: 获取任务结果
     Server-->>-Client: 返回处理结果
 ```
+
+## 测试数据集：test_data
+
+本测试数据集包含以下五个部分，分别对应不同的处理和识别任务：
+
+1. **dehaze**  
+   图像去烟处理
+
+2. **image_identify**  
+   图像识别
+
+3. **video_identify**  
+   视频识别
+
+4. **fusion**  
+   融合识别（太大了，放不上去）
+
+5. **val**  
+   识别性能评估

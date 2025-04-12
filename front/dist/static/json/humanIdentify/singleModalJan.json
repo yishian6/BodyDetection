@@ -1,0 +1,102 @@
+[
+    {
+        "model": "Yolov11-预训练模型",
+        "dataset": "明亮无烟",
+        "imageNum": "108",
+        "Precision": "98.10%",
+        "Recall": "79.50%",
+        "mAP50": "89.20%",
+        "mAP95": "71.50%",
+        "handleTime": "2.4ms"
+    },
+    {
+        "model": "Yolov11-预训练模型",
+        "dataset": "明亮轻烟",
+        "imageNum": "195",
+        "Precision": "95.50%",
+        "Recall": "69.80%",
+        "mAP50": "84.00%",
+        "mAP95": "68.50%",
+        "handleTime": "1.2ms"
+    },
+    {
+        "model": "Yolov11-预训练模型",
+        "dataset": "暗光白色浓烟",
+        "imageNum": "108",
+        "Precision": "100.00%",
+        "Recall": "91.70%",
+        "mAP50": "95.80%",
+        "mAP95": "82.00%",
+        "handleTime": "1.2ms"
+    },
+    {
+        "model": "Yolov11-预训练模型",
+        "dataset": "暗光黑色浓烟",
+        "imageNum": "166",
+        "Precision": "100.00%",
+        "Recall": "91.00%",
+        "mAP50": "95.50%",
+        "mAP95": "80.10%",
+        "handleTime": "1.3ms"
+    },
+    {
+        "model": "Yolov11-预训练模型",
+        "dataset": "暗光黄色浓烟",
+        "imageNum": "149",
+        "Precision": "99.20%",
+        "Recall": "78.00%",
+        "mAP50": "88.90%",
+        "mAP95": "78.50%",
+        "handleTime": "1.3ms"
+    },
+    {
+        "model": "Yolov11-官方数据训练模型",
+        "dataset": "明亮无烟",
+        "imageNum": "108",
+        "Precision": "98.50%",
+        "Recall": "97.70%",
+        "mAP50": "98.40%",
+        "mAP95": "81.90%",
+        "handleTime": "2.3ms"
+    },
+    {
+        "model": "Yolov11-官方数据训练模型",
+        "dataset": "明亮轻烟",
+        "imageNum": "195",
+        "Precision": "99.30%",
+        "Recall": "92.00%",
+        "mAP50": "96.00%",
+        "mAP95": "83.30%",
+        "handleTime": "1.2ms"
+    },
+    {
+        "model": "Yolov11-官方数据训练模型",
+        "dataset": "暗光白色浓烟",
+        "imageNum": "108",
+        "Precision": "100.00%",
+        "Recall": "99.10%",
+        "mAP50": "99.50%",
+        "mAP95": "89.10%",
+        "handleTime": "1.0ms"
+    },
+    {
+        "model": "Yolov11-官方数据训练模型",
+        "dataset": "暗光黑色浓烟",
+        "imageNum": "166",
+        "Precision": "100.00%",
+        "Recall": "100.00%",
+        "mAP50": "99.50%",
+        "mAP95": "89.30%",
+        "handleTime": "1.2ms"
+    },
+    {
+        "model": "Yolov11-官方数据训练模型",
+        "dataset": "暗光黄色浓烟",
+        "imageNum": "149",
+        "Precision": "98.80%",
+        "Recall": "97.50%",
+        "mAP50": "99.00%",
+        "mAP95": "90.10%",
+        "handleTime": "1.2ms"
+    }
+]

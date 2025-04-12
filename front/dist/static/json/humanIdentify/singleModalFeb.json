@@ -1,0 +1,42 @@
+[
+    {
+        "model": "Yolov11-预训练模型",
+        "dataset": "热成像",
+        "imageNum": "942",
+        "Precision": "97.60%",
+        "Recall": "85.30%",
+        "mAP50": "91.90%",
+        "mAP95": "78.40%",
+        "handleTime": "0.8ms"
+    },
+    {
+        "model": "Yolov11-预训练模型",
+        "dataset": "融合数据集",
+        "imageNum": "942",
+        "Precision": "99.10%",
+        "Recall": "65.60%",
+        "mAP50": "82.60%",
+        "mAP95": "68.80%",
+        "handleTime": "0.8ms"
+    },
+    {
+        "model": "Yolov11-官方数据训练模型",
+        "dataset": "热成像",
+        "imageNum": "942",
+        "Precision": "100%",
+        "Recall": "99.90%",
+        "mAP50": "99.50%",
+        "mAP95": "95.40%",
+        "handleTime": "0.7ms"
+    },
+    {
+        "model": "Yolov11-官方数据训练模型",
+        "dataset": "融合数据集",
+        "imageNum": "942",
+        "Precision": "100%",
+        "Recall": "100%",
+        "mAP50": "99.50%",
+        "mAP95": "94.10%",
+        "handleTime": "0.7ms"
+    }
+]
