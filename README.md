@@ -1,5 +1,7 @@
 # README
 
+第十六届中国大学生服务外包创新创业大赛：T2405446-火眼晶晶-A25浓烟环境人体目标判别-基于浓烟环境人体目标识别系统源码
+
 ```mermaid
 sequenceDiagram
     participant Client as 前端
