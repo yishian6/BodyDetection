@@ -1,0 +1,29 @@
+[
+    {
+        "dataset": "wuxi_image_tr",
+        "testNum": 942,
+        "correctNum": "-",
+        "precision": 1.0000,
+        "recall": 0.9990,
+        "mAP5": 0.9950,
+        "mAP9": 0.9540
+    },
+    {
+        "dataset": "wuxi_image_ir",
+        "testNum": 942,
+        "correctNum": "-",
+        "precision": 0.0000,
+        "recall": 0.0000,
+        "mAP5": 0.0000,
+        "mAP9": 0.0000
+    },
+    {
+        "dataset": "wuxi_image_fusion",
+        "testNum": 3187,
+        "correctNum": "-",
+        "precision": 1.0000,
+        "recall": 0.9990,
+        "mAP5": 0.9950,
+        "mAP9": 0.9430
+    }
+]

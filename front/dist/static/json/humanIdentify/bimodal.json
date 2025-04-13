@@ -1,0 +1,22 @@
+[
+    {
+        "model": "YOLOv11预训练模型",
+        "dataset": "双模态数据集",
+        "imageNum": "942",
+        "Precision": "97.60%",
+        "Recall": "85.30%",
+        "mAP50": "91.90%",
+        "mAP95": "78.40%",
+        "handleTime": "0.8ms"
+    },
+    {
+        "model": "CTF-YOLOv11训练后模型",
+        "dataset": "双模态数据集",
+        "imageNum": "942",
+        "Precision": "100.00%",
+        "Recall": "99.80%",
+        "mAP50": "99.60%",
+        "mAP95": "81.90%",
+        "handleTime": "2.6ms"
+    }
+]

@@ -1,0 +1,32 @@
+{
+  "data": [
+    {
+      "UNIT_NAME": "库房1",
+      "MARKET_NAME": "李四",
+      "TYPE_NAME": "13285201234",
+      "CAPACITY": "江苏省 南京市浦口区",
+      "START_TIME": "南京市浦口高新开发区"
+    },
+    {
+      "UNIT_NAME": "桥北库房",
+      "MARKET_NAME": "张三",
+      "TYPE_NAME": "1313131",
+      "CAPACITY": "河北省石家庄市长安区",
+      "START_TIME": "南京市浦口区泰山新村2号"
+    },
+    {
+      "UNIT_NAME": "库房1号",
+      "MARKET_NAME": "赵六",
+      "TYPE_NAME": "13788885023",
+      "CAPACITY": "天津市河东区",
+      "START_TIME": "天津市河东区1号"
+    },
+    {
+      "UNIT_NAME": "库房二号",
+      "MARKET_NAME": "王五",
+      "TYPE_NAME": "1234567890",
+      "CAPACITY": "北京市朝阳区",
+      "START_TIME": "北京市朝阳区"
+    }
+  ]
+}

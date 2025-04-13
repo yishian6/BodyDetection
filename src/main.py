@@ -1,5 +1,5 @@
 import os
-from flask import Flask, abort, send_file, request
+from flask import Flask, abort, send_file, request, render_template
 import sys
 
 from config import ROOT, UPLOAD_FOLDER
@@ -7,7 +7,9 @@ from config import ROOT, UPLOAD_FOLDER
 sys.path.append(ROOT)
 from views import dehaze_view, detect_view, realtime_view, upload_view, task_view, val_view
 
-app = Flask(__name__, static_url_path="/")
+app = Flask(__name__, static_folder=os.path.join(ROOT, 'front', 'dist'),  # 设置静态文件夹目录
+            template_folder=os.path.join(ROOT, 'front', 'dist'),
+            static_url_path="")
 
 app.register_blueprint(dehaze_view.dehaze_bp)
 app.register_blueprint(detect_view.detect_bp)
@@ -19,7 +21,7 @@ app.register_blueprint(val_view.val_bp)
 
 @app.route("/")
 def index():
-    return app.send_static_file("index.html")
+    return render_template('index.html', name='index')
 
 
 @app.route('/download')
@@ -57,6 +59,8 @@ def download_file():
         mimetype = 'video/x-matroska'
     elif filename.endswith('.webm'):
         mimetype = 'video/webm'
+    elif filename.endswith('.pdf'):  # 添加对 PDF 文件的支持
+        mimetype = 'application/pdf'
 
     # 发送文件，并设置下载的文件名
     return send_file(filepath, as_attachment=True, mimetype=mimetype)
